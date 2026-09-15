@@ -59,13 +59,13 @@ try {
         authMessage.classList.remove('hidden');
     }
 
-    document.querySelectorAll('.toggle-password').forEach(button => {
-        button.addEventListener('click', () => {
-            const targetId = button.getAttribute('data-target');
+    // Lógica del Switch de Contraseña
+    document.querySelectorAll('.toggle-password').forEach(toggle => {
+        toggle.addEventListener('change', (event) => {
+            const targetId = event.target.getAttribute('data-target');
             const input = document.getElementById(targetId);
             if (input) {
-                input.type = input.type === 'password' ? 'text' : 'password';
-                button.textContent = input.type === 'password' ? 'Ver' : 'Ocultar';
+                input.type = event.target.checked ? 'text' : 'password';
             }
         });
     });

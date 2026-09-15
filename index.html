@@ -6,7 +6,7 @@
     <title>Ksandra - Generador de Pesca</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#00051A">
+    <meta name="theme-color" content="#02020A">
 </head>
 <body>
 
@@ -19,7 +19,10 @@
                 <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
                 <div class="password-container">
                     <input type="password" id="loginPassword" placeholder="Contraseña" required>
-                    <button type="button" class="toggle-password" data-target="loginPassword">Ver</button>
+                    <label class="switch">
+                        <input type="checkbox" class="toggle-password" data-target="loginPassword">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
                 <button id="btnLogin">Iniciar Sesión</button>
                 <button id="btnGoogleLogin" class="google-btn">Continuar con Google</button>
@@ -31,7 +34,10 @@
                 <input type="email" id="regEmail" placeholder="Correo electrónico" required>
                 <div class="password-container">
                     <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
-                    <button type="button" class="toggle-password" data-target="regPassword">Ver</button>
+                    <label class="switch">
+                        <input type="checkbox" class="toggle-password" data-target="regPassword">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
                 <button id="btnRegister">Crear Cuenta</button>
                 <p class="auth-link">¿Ya tienes cuenta? <span id="showLogin">Inicia sesión</span></p>
