@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ksandra - Generador de Pesca</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+</head>
+<body>
+
+    <!-- Pantalla de Autenticación -->
+    <section id="authSection" class="auth-section">
+        <div class="auth-container">
+            <h1>Ksandra</h1>
+            <p>Accede a tu sesión segura</p>
+            
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                <button id="btnLogin">Iniciar Sesión</button>
+                <button id="btnGoogleLogin" class="google-btn">Continuar con Google</button>
+                <p class="auth-link">¿No tienes cuenta? <span id="showRegister">Regístrate</span></p>
+                <p class="auth-link"><span id="showReset">Olvidé mi contraseña</span></p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+                <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
+                <button id="btnRegister">Crear Cuenta</button>
+                <p class="auth-link">¿Ya tienes cuenta? <span id="showLogin">Inicia sesión</span></p>
+            </div>
+
+            <div id="resetForm" class="hidden">
+                <input type="email" id="resetEmail" placeholder="Correo electrónico" required>
+                <button id="btnReset">Enviar enlace de recuperación</button>
+                <p class="auth-link"><span id="backToLogin">Volver al inicio de sesión</span></p>
+            </div>
+            
+            <p id="authMessage" class="message hidden"></p>
+        </div>
+    </section>
+
+    <!-- Aplicación Principal -->
+    <div id="mainApp" class="hidden">
+        <header>
+            <div class="header-title">
+                <h1>Ksandra</h1>
+                <p>Sistema de exclusión secuencial</p>
+            </div>
+            <div class="header-actions">
+                <span id="userEmail"></span>
+                <button id="btnLogout" class="secondary">Salir</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <label for="wordList">Lista de palabras (una por línea):</label>
+                <textarea id="wordList" placeholder="As&#10;Dos&#10;Tres&#10;Cuatro..."></textarea>
+                <div class="button-group">
+                    <button id="generateBtn">Generar Sistema</button>
+                    <button id="saveBtn" class="secondary" disabled>Guardar en Nube</button>
+                </div>
+            </section>
+
+            <section id="saved
