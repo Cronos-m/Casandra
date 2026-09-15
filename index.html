@@ -6,11 +6,10 @@
     <title>Ksandra - Generador de Pesca</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#121212">
+    <meta name="theme-color" content="#00051A">
 </head>
 <body>
 
-    <!-- Pantalla de Autenticación -->
     <section id="authSection" class="auth-section">
         <div class="auth-container">
             <h1>Ksandra</h1>
@@ -18,7 +17,10 @@
             
             <div id="loginForm">
                 <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
-                <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                <div class="password-container">
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <button type="button" class="toggle-password" data-target="loginPassword">Ver</button>
+                </div>
                 <button id="btnLogin">Iniciar Sesión</button>
                 <button id="btnGoogleLogin" class="google-btn">Continuar con Google</button>
                 <p class="auth-link">¿No tienes cuenta? <span id="showRegister">Regístrate</span></p>
@@ -27,7 +29,10 @@
 
             <div id="registerForm" class="hidden">
                 <input type="email" id="regEmail" placeholder="Correo electrónico" required>
-                <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
+                <div class="password-container">
+                    <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
+                    <button type="button" class="toggle-password" data-target="regPassword">Ver</button>
+                </div>
                 <button id="btnRegister">Crear Cuenta</button>
                 <p class="auth-link">¿Ya tienes cuenta? <span id="showLogin">Inicia sesión</span></p>
             </div>
@@ -42,7 +47,6 @@
         </div>
     </section>
 
-    <!-- Aplicación Principal -->
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-title">
@@ -65,4 +69,32 @@
                 </div>
             </section>
 
-            <section id="saved
+            <section id="savedSection" class="saved-section hidden">
+                <h2>Mis Anagramas Guardados</h2>
+                <ul id="savedList"></ul>
+            </section>
+
+            <section id="results" class="results-section hidden">
+                <div class="anagram-box">
+                    <h2>Anagrama Sugerido</h2>
+                    <p id="anagramDisplay" class="anagram-text"></p>
+                    <p class="hint">Memoriza esta palabra. Las letras en orden son tus preguntas.</p>
+                    <button id="shareBtn" class="secondary">Compartir Link</button>
+                </div>
+
+                <div class="tree-box">
+                    <h2>Árbol de Decisiones</h2>
+                    <div id="decisionTree"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW falló:', err));
+        }
+    </script>
+</body>
+</html>

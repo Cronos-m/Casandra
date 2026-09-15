@@ -1,4 +1,3 @@
-// auth.js
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -39,7 +38,7 @@ export async function loginWithGoogle() {
 export async function resetPassword(email) {
     try {
         await sendPasswordResetEmail(auth, email);
-        return { success: true, message: "Correo de recuperación enviado. Revisa tu bandeja de entrada." };
+        return { success: true, message: "Correo de recuperación enviado. Revisa tu bandeja." };
     } catch (error) {
         return { success: false, error: getAuthErrorMessage(error.code) };
     }
@@ -67,7 +66,7 @@ function getAuthErrorMessage(code) {
         'auth/wrong-password': 'Contraseña incorrecta.',
         'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde.',
         'auth/popup-closed-by-user': 'El inicio de sesión fue cancelado.',
-        'auth/operation-not-allowed': 'El inicio de sesión con Google no está habilitado en la consola.'
+        'auth/operation-not-allowed': 'El inicio de sesión con Google no está habilitado en Firebase.'
     };
     return messages[code] || 'Ocurrió un error. Intenta de nuevo.';
 }
