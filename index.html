@@ -6,53 +6,61 @@
     <title>Ksandra - Generador de Pesca</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#02020A">
+    <meta name="theme-color" content="#f3ecdd">
 </head>
 <body>
 
+    <!-- Pantalla de Autenticación -->
     <section id="authSection" class="auth-section">
         <div class="auth-container">
             <h1>Ksandra</h1>
-            <p>Accede a tu sesión segura</p>
-            
+            <p class="subtitle">Tu compañera de rutinas y memoria</p>
+
+            <!-- Kasandra animada: sprite de 3 estados sobre una sola imagen -->
+            <div class="kasandra state-idle" id="kasandra" aria-hidden="true">
+                <div class="k-frame k-idle"></div>
+                <div class="k-frame k-cover"></div>
+                <div class="k-frame k-peek"></div>
+            </div>
+
             <div id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email">
                 <div class="password-container">
-                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
-                    <label class="switch">
+                    <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password">
+                    <label class="switch" title="Mostrar contraseña">
                         <input type="checkbox" class="toggle-password" data-target="loginPassword">
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <button id="btnLogin">Iniciar Sesión</button>
-                <button id="btnGoogleLogin" class="google-btn">Continuar con Google</button>
+                <button id="btnLogin" class="btn">Iniciar Sesión</button>
+                <button id="btnGoogleLogin" class="btn btn-ghost">Continuar con Google</button>
                 <p class="auth-link">¿No tienes cuenta? <span id="showRegister">Regístrate</span></p>
                 <p class="auth-link"><span id="showReset">Olvidé mi contraseña</span></p>
             </div>
 
             <div id="registerForm" class="hidden">
-                <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+                <p class="welcome-note">Agradecemos mucho que te unas a nuestra herramienta! Crea tu cuenta en segundos y lleva tus rutinas contigo a cualquier escenario, en cualquier dispositivo.</p>
+                <input type="email" id="regEmail" placeholder="Correo electrónico" autocomplete="email">
                 <div class="password-container">
-                    <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
-                    <label class="switch">
+                    <input type="password" id="regPassword" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password">
+                    <label class="switch" title="Mostrar contraseña">
                         <input type="checkbox" class="toggle-password" data-target="regPassword">
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <button id="btnRegister">Crear Cuenta</button>
+                <button id="btnRegister" class="btn">Crear Cuenta</button>
                 <p class="auth-link">¿Ya tienes cuenta? <span id="showLogin">Inicia sesión</span></p>
             </div>
 
             <div id="resetForm" class="hidden">
-                <input type="email" id="resetEmail" placeholder="Correo electrónico" required>
-                <button id="btnReset">Enviar enlace de recuperación</button>
+                <input type="email" id="resetEmail" placeholder="Correo electrónico" autocomplete="email">
+                <button id="btnReset" class="btn">Enviar enlace de recuperación</button>
                 <p class="auth-link"><span id="backToLogin">Volver al inicio de sesión</span></p>
             </div>
-            
-            <p id="authMessage" class="message hidden"></p>
         </div>
     </section>
 
+    <!-- Aplicación Principal -->
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-title">
@@ -61,39 +69,69 @@
             </div>
             <div class="header-actions">
                 <span id="userEmail"></span>
-                <button id="btnLogout" class="secondary">Salir</button>
+                <button id="btnLogout" class="btn btn-ghost btn-small">Salir</button>
             </div>
         </header>
 
         <main>
-            <section class="input-section">
-                <label for="wordList">Lista de palabras (una por línea):</label>
+            <section class="card input-section">
+                <label for="wordList">Lista de palabras (una por línea)</label>
                 <textarea id="wordList" placeholder="As&#10;Dos&#10;Tres&#10;Cuatro..."></textarea>
                 <div class="button-group">
-                    <button id="generateBtn">Generar Sistema</button>
-                    <button id="saveBtn" class="secondary" disabled>Guardar en Nube</button>
+                    <button id="generateBtn" class="btn">Generar Sistema</button>
+                    <button id="saveBtn" class="btn btn-ghost" disabled>Guardar en Nube</button>
                 </div>
             </section>
 
-            <section id="savedSection" class="saved-section hidden">
+            <section id="savedSection" class="card saved-section hidden">
                 <h2>Mis Anagramas Guardados</h2>
                 <ul id="savedList"></ul>
             </section>
 
             <section id="results" class="results-section hidden">
-                <div class="anagram-box">
+                <div class="card anagram-box">
                     <h2>Anagrama Sugerido</h2>
                     <p id="anagramDisplay" class="anagram-text"></p>
                     <p class="hint">Memoriza esta palabra. Las letras en orden son tus preguntas.</p>
-                    <button id="shareBtn" class="secondary">Compartir Link</button>
+                    <button id="shareBtn" class="btn btn-ghost">Compartir Link</button>
                 </div>
 
-                <div class="tree-box">
+                <div class="card tree-box">
                     <h2>Árbol de Decisiones</h2>
                     <div id="decisionTree"></div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Popup global de avisos y confirmaciones -->
+    <div id="popupOverlay" class="popup-overlay hidden">
+        <div class="popup-box" id="popupBox">
+            <h3 id="popupTitle"></h3>
+            <p id="popupMessage"></p>
+            <div class="popup-actions">
+                <button id="popupConfirm" class="btn btn-small hidden">Confirmar</button>
+                <button id="popupClose" class="btn btn-ghost btn-small">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edición (CRUD: Actualizar) -->
+    <div id="editOverlay" class="popup-overlay hidden">
+        <div class="popup-box edit-box">
+            <h3>Editar anagrama</h3>
+            <label for="editTitle">Título</label>
+            <input type="text" id="editTitle" placeholder="Nombre para identificar tu rutina">
+            <label for="editWords">Palabras (una por línea)</label>
+            <textarea id="editWords"></textarea>
+            <label for="editAnagram">Anagrama (letras en orden de pregunta)</label>
+            <input type="text" id="editAnagram">
+            <p class="hint">Al guardar, el árbol de decisiones se recalcula automáticamente con las letras del anagrama en orden.</p>
+            <div class="button-group">
+                <button id="editSave" class="btn">Guardar cambios</button>
+                <button id="editCancel" class="btn btn-ghost">Cancelar</button>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="app.js"></script>

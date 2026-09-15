@@ -1,9 +1,9 @@
 {
-  "name": "Ksandra - Generador de anagramas",
+  "name": "Ksandra - Generador de Pesca",
   "short_name": "Ksandra",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#00051A",
-  "theme_color": "#2E58FF",
+  "background_color": "#f3ecdd",
+  "theme_color": "#8a6a2f",
   "icons": []
 }
