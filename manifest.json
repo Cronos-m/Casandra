@@ -1,20 +1,9 @@
 {
-  "name": "Ksandra",
+  "name": "Ksandra - Generador de anagramas",
   "short_name": "Ksandra",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#bb86fc",
-  "icons": [
-    {
-      "src": "https://via.placeholder.com/192/bb86fc/000000?text=K",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://via.placeholder.com/512/bb86fc/000000?text=K",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "background_color": "#00051A",
+  "theme_color": "#2E58FF",
+  "icons": []
 }
