@@ -99,13 +99,10 @@ body {
     text-align: left;
 }
 
-/* Kasandra animada: sprite de 3 fotogramas con fundido cruzado */
+/* Kasandra animada: sprite de 3 fotogramas con movimiento y fundido */
 .kasandra {
     position: relative;
     width: 118px;
-    /* Proporción de un tercio de la hoja: (anchoHoja / 3) / altoHoja.
-       Para una hoja de 2000 x 1125 px el valor correcto es 16/27.
-       Si regeneras la hoja con otra proporción, ajusta aquí. */
     aspect-ratio: 16 / 27;
     margin: 0 auto 10px;
 }
@@ -117,26 +114,44 @@ body {
     background-size: 300% 100%;
     background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity .35s ease;
-    /* Funde los bordes del fotograma con la tarjeta de login */
+    transform: translateY(14%) scale(1.04);
+    transition:
+        opacity .3s ease,
+        transform .5s cubic-bezier(.22, 1.25, .36, 1);
     -webkit-mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 55%, transparent 98%);
     mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 55%, transparent 98%);
 }
 
-/* Cada estado muestra un tercio distinto de la hoja */
+/* Posiciones explícitas de cada tercio. Si un panel no queda
+   centrado en tu hoja, ajusta aquí su porcentaje en pasos de 2. */
 .k-idle  { background-position: 0% 50%; }
 .k-cover { background-position: 50% 50%; }
 .k-peek  { background-position: 100% 50%; }
 
-/* El estado activo se funde hacia visible */
 .kasandra.state-idle  .k-idle,
 .kasandra.state-cover .k-cover,
-.kasandra.state-peek  .k-peek { opacity: 1; }
+.kasandra.state-peek  .k-peek {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
 
-/* Si prefieres retrato enmarcado en vez de fundido: elimina las 4 lineas
-   de mask-image de .k-frame y agrega a .kasandra:
-   border: 1px solid var(--border);
-   border-radius: 10px; */
+/* Vida en reposo: respiración sutil en bucle */
+.kasandra.state-idle .k-idle {
+    animation: k-breathe 3.6s ease-in-out infinite;
+}
+@keyframes k-breathe {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(1.6%) scale(1); }
+}
+
+/* La espía se balancea levemente, como quien vigila de reojo */
+.kasandra.state-peek .k-peek {
+    animation: k-sway 4.2s ease-in-out infinite;
+}
+@keyframes k-sway {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(0.8%) rotate(-1.2deg); }
+}
 
 /* Campos */
 input, textarea {

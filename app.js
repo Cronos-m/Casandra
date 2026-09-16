@@ -22,14 +22,12 @@ let currentAnagram = '';
 let currentSteps = [];
 let currentWords = '';
 let editingId = null;
-let kasandraTimer = null;
 let popupConfirmCallback = null;
 
 window.savedAnagramsData = {};
 
 /* ============================================================
    SECCION 2: UTILIDADES DE POPUP
-   Reemplazan a alert() y confirm() por modales elegantes.
    ============================================================ */
 const popupOverlay = document.getElementById('popupOverlay');
 const popupBox = document.getElementById('popupBox');
@@ -69,21 +67,21 @@ popupConfirm.addEventListener('click', () => {
 });
 
 /* ============================================================
-   SECCION 3: KASANDRA ANIMADA
-   idle  = reposo, mirando al frente.
-   cover = escribe la contraseña con el switch apagado: se tapa los ojos.
-   peek  = switch encendido: espia de reojo entre los dedos.
+   SECCION 3: KASANDRA, ESTADOS Y REACCIONES
+   Regla única:
+   - switch encendido               -> peek  (espía de reojo)
+   - switch apagado y foco dentro
+     de un campo de contraseña      -> cover (imagen central)
+   - cualquier otro caso            -> idle  (reposo)
    ============================================================ */
 function setKasandra(state) {
-    if (!kasandra) return;
+    if (!kasandra) {
+        console.warn("Kasandra: no se encontró el contenedor #kasandra en el HTML.");
+        return;
+    }
     kasandra.classList.remove('state-idle', 'state-cover', 'state-peek');
     kasandra.classList.add('state-' + state);
-}
-
-function kasandraCoverThenIdle() {
-    setKasandra('cover');
-    clearTimeout(kasandraTimer);
-    kasandraTimer = setTimeout(() => setKasandra('idle'), 1200);
+    console.log("Ksandra: estado activo ->", state);
 }
 
 /* ============================================================
@@ -105,28 +103,38 @@ document.getElementById('showReset').addEventListener('click', () => toggleForm(
 document.getElementById('backToLogin').addEventListener('click', () => toggleForm('login'));
 
 /* ============================================================
-   SECCION 5: SWITCH DE CONTRASENA + REACCION DE KASANDRA
+   SECCION 5: SWITCH DE CONTRASENA Y REACCION DE KASANDRA
    ============================================================ */
 document.querySelectorAll('.toggle-password').forEach(toggle => {
     const targetId = toggle.getAttribute('data-target');
     const input = document.getElementById(targetId);
+    if (!input) {
+        console.warn("Kasandra: no existe el input", targetId);
+        return;
+    }
+
+    /* Recalcula el estado correcto según switch y foco */
+    const refresh = () => {
+        if (toggle.checked) {
+            setKasandra('peek');
+            return;
+        }
+        setKasandra(document.activeElement === input ? 'cover' : 'idle');
+    };
 
     toggle.addEventListener('change', () => {
         input.type = toggle.checked ? 'text' : 'password';
-        setKasandra(toggle.checked ? 'peek' : 'idle');
+        refresh();
     });
 
-    input.addEventListener('input', () => {
-        if (toggle.checked) {
-            setKasandra('peek');
-        } else {
-            kasandraCoverThenIdle();
-        }
-    });
+    /* Al entrar al campo de contraseña: imagen central */
+    input.addEventListener('focus', refresh);
 
-    input.addEventListener('blur', () => {
-        if (!toggle.checked) setKasandra('idle');
-    });
+    /* Al salir del campo: reposo, salvo switch encendido */
+    input.addEventListener('blur', refresh);
+
+    /* Refuerzo mientras teclea */
+    input.addEventListener('input', refresh);
 });
 
 /* ============================================================
@@ -302,8 +310,6 @@ document.getElementById('saveBtn').addEventListener('click', saveToCloud);
 
 /* ============================================================
    SECCION 9: CRUD EN LA NUBE (FIRESTORE)
-   Create: saveToCloud | Read: loadSavedAnagramsFromCloud
-   Update: openEdit + editSave | Delete: deleteAnagram
    ============================================================ */
 async function saveToCloud() {
     if (!currentUser || !currentAnagram) return;
